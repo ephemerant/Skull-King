@@ -9,15 +9,29 @@ function Game(numPlayers) {
         });
     }
 
+    // Display the current scores
+    function displayScores() {
+        var table = [];
+
+        state.players.forEach(function(player) {
+            table.push({
+                name: player.name,
+                score: player.score,
+                bet: player.bet,
+                tricks: player.tricks
+            })
+        });
+
+        console.table(table);
+    }
+
     // Play the game
     function play() {
         // Play 10 rounds
         for (var i = 1; i <= 10; i++) {
-            var round = Round(state);
-            state.rounds.push(round);
-
-            // Rotate starting player
-            state.startingPlayer = (state.startingPlayer + 1) % numPlayers;
+            state.rounds.push(Round(state));
+            state.startingPlayer = (state.startingPlayer + 1) % numPlayers; // Rotate starting player
+            displayScores();
         }
     }
 

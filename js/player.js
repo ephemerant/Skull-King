@@ -33,8 +33,11 @@ function Player(i, name) {
         name: name || ('Player ' + i),
         order: i,
         hand: [],
-        human: name != null,
-        turn: turn
+        human: name != null,        
+        turn: turn,
+        score: 0, // Score throughout the game
+        bet: 0, // Hands that the player bet they could win for the current turn
+        tricks: 0 // Hands won for the current turn        
     };
 
     return player;
