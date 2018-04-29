@@ -1,0 +1,98 @@
+<head>
+<style>
+    body {
+        margin: 0;
+    }
+</style>
+</head>
+
+<body onresize="resize()" onload="resize()">
+<canvas id="screen"></canvas>
+
+<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+
+<script>
+    var canvas = document.getElementById('screen');
+    canvas.style.backgroundColor = "#eee";
+
+    // Initialize
+    var stage = new createjs.Stage('screen');
+    stage.enableMouseOver(10);
+
+    function drawCard(name, rgb, x, y, width) {
+        var height = 284 / 202 * width;
+        var border = width * 0.12;
+
+        // draw shapes and text
+        var shapeBorder = new createjs.Shape();
+        shapeBorder.graphics.beginFill('white').drawRoundRect(0, 0, width, height, width / 20);
+        shapeBorder.shadow = new createjs.Shadow("rgba(0,0,0,0.4)", 0, border / 6, border / 2);
+
+        var shapeColor = new createjs.Shape();
+        shapeColor.graphics.beginFill(rgb).drawRoundRect(border / 2,  border / 2, width - border, height - border, width / 50);
+        
+        var textTL = new createjs.Text(name, width / 3.5 + "px Arial", "white");
+        textTL.x = border;
+        textTL.y = border;
+        textTL.shadow = new createjs.Shadow("rgba(0,0,0,0.8)", border / 8, border / 8, border / 3);
+
+        var textBR = new createjs.Text(name, width / 3.5 + "px Arial", "white");
+        textBR.x = width - border;
+        textBR.y = height - border;
+        textBR.rotation = 180;
+        textBR.shadow = new createjs.Shadow("rgba(0,0,0,0.8)", -border / 8, -border / 8, border / 3);
+
+        // group shapes and text
+        var card = new createjs.Container();
+        card.addChild(shapeBorder, shapeColor, textTL, textBR);
+
+        card.on('mouseover', function(e) {
+            shapeBorder.shadow = new createjs.Shadow("rgba(0,0,0,0.6)", 0, border / 6, border);
+            stage.update();
+        });
+
+        card.on('mouseout', function(e) {
+            shapeBorder.shadow = new createjs.Shadow("rgba(0,0,0,0.4)", 0, border / 6, border / 2);
+            stage.update();
+        });
+
+        // set center
+        card.regX = width / 2;
+        card.regY = height / 2;
+
+        // set position
+        card.x = x;
+        card.y = y;
+
+        // add to stage
+        stage.addChild(card);
+    }
+
+    var colors = {
+        purple: 'rgb(150, 100, 255)',
+        yellow: 'rgb(255, 200, 0)',
+        green: 'rgb(0, 200, 0)',
+        black: '#222',
+    };
+
+    var cardWidth = 100;
+
+    drawCard(7, colors.purple, 300, 300, cardWidth);
+    drawCard(2, colors.yellow, 300 + cardWidth * 1.5, 300, cardWidth);
+    drawCard(6, colors.green, 300 + cardWidth * 3, 300, cardWidth);
+    drawCard(1, colors.black, 300 + cardWidth * 4.5, 300, cardWidth);
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        stage.update();
+    }     
+
+    // Library functions
+
+    // Returns a random integer between low and high, both inclusive
+    function random(low, high) {
+        return Math.floor(Math.random() * (high - low + 1) + low);
+    }
+</script>
+</body>
