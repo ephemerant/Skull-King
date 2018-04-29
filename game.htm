@@ -56,6 +56,23 @@
             stage.update();
         });
 
+        card.on("pressmove", function(e) { // drag
+            card.x = e.stageX;
+            card.y = e.stageY;
+            stage.update();
+        });
+
+        card.on('mousedown', function() {
+            shapeBorder.shadow = new createjs.Shadow("rgba(0,0,0,0.9)", 0, border / 6, border);
+            stage.setChildIndex(card, stage.getNumChildren() - 1);
+            stage.update();
+        });
+
+        card.on("pressup", function(e) {
+            shapeBorder.shadow = new createjs.Shadow("rgba(0,0,0,0.6)", 0, border / 6, border); // use mouseover shadow
+            stage.update();
+        });        
+
         // set center
         card.regX = width / 2;
         card.regY = height / 2;
